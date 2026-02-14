@@ -287,6 +287,22 @@ if (loginButton) {
     passwordInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') checkLogin();
     });
+
+    // Auto-login on typing "meow"
+    passwordInput.addEventListener('input', () => {
+        const val = passwordInput.value.toLowerCase().trim();
+        if (val === 'meow') {
+            checkLogin();
+        }
+        // Hint animation or glow based on correct letters (optional cool touch)
+        if ('meow'.startsWith(val)) {
+            passwordInput.style.borderColor = '#00d4ff';
+            passwordInput.style.boxShadow = '0 0 15px #00d4ff55';
+        } else {
+            passwordInput.style.borderColor = 'rgba(255,255,255,0.2)';
+            passwordInput.style.boxShadow = 'none';
+        }
+    });
 }
 
 
