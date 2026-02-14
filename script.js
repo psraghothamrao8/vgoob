@@ -154,11 +154,6 @@ function triggerHaptic() {
 // Hug button click handler
 hugBtn.addEventListener('click', () => {
     triggerHaptic();
-
-    // Remove hint if present
-    const hint = document.querySelector('.click-hint');
-    if (hint) hint.remove();
-
     hugCount++;
     hugCountSpan.textContent = hugCount;
 
@@ -172,6 +167,23 @@ hugBtn.addEventListener('click', () => {
     // Explode hearts from button
     const rect = hugBtn.getBoundingClientRect();
     createHearts(rect.left + rect.width / 2, rect.top);
+});
+
+// Touch handling for hearts (Multi-touch support)
+window.addEventListener('touchstart', (e) => {
+    // Prevent default to avoid scrolling/zooming issues on some interactions if needed
+    // e.preventDefault(); 
+
+    for (let i = 0; i < e.touches.length; i++) {
+        const touch = e.touches[i];
+        createHearts(touch.clientX, touch.clientY);
+        triggerHaptic();
+    }
+}, { passive: true });
+
+// Mouse click for hearts (Keep for desktop)
+window.addEventListener('mousedown', (e) => {
+    createHearts(e.clientX, e.clientY);
 });
 
 // Orientation change logic for responsiveness
@@ -274,22 +286,6 @@ if (loginButton) {
     loginButton.addEventListener('click', checkLogin);
     passwordInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') checkLogin();
-    });
-
-    // Auto-login on typing "meow"
-    passwordInput.addEventListener('input', () => {
-        const val = passwordInput.value.toLowerCase().trim();
-        if (val === 'meow') {
-            checkLogin();
-        }
-        // Hint animation or glow based on correct letters (optional cool touch)
-        if ('meow'.startsWith(val)) {
-            passwordInput.style.borderColor = '#00d4ff';
-            passwordInput.style.boxShadow = '0 0 15px #00d4ff55';
-        } else {
-            passwordInput.style.borderColor = 'rgba(255,255,255,0.2)';
-            passwordInput.style.boxShadow = 'none';
-        }
     });
 }
 
