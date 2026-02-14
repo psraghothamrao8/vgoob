@@ -144,27 +144,105 @@ function createHearts(x, y) {
     }
 }
 
+// Haptic Feedback Helper
+function triggerHaptic() {
+    if (navigator.vibrate) {
+        navigator.vibrate(15); // Light vibration
+    }
+}
+
 // Hug button click handler
 hugBtn.addEventListener('click', () => {
+    triggerHaptic();
     hugCount++;
     hugCountSpan.textContent = hugCount;
 
+    // Change message and hero owl
     const randomMsg = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
     funnyMessageP.textContent = randomMsg;
 
     const randomImg = owlImages[Math.floor(Math.random() * owlImages.length)];
     heroOwl.src = `images/${randomImg}`;
 
+    // Explode hearts from button
     const rect = hugBtn.getBoundingClientRect();
     createHearts(rect.left + rect.width / 2, rect.top);
 });
 
-// Click anywhere for hearts
+// Touch handling for hearts (Multi-touch support)
+window.addEventListener('touchstart', (e) => {
+    // Prevent default to avoid scrolling/zooming issues on some interactions if needed
+    // e.preventDefault(); 
+
+    for (let i = 0; i < e.touches.length; i++) {
+        const touch = e.touches[i];
+        createHearts(touch.clientX, touch.clientY);
+        triggerHaptic();
+    }
+}, { passive: true });
+
+// Mouse click for hearts (Keep for desktop)
 window.addEventListener('mousedown', (e) => {
     createHearts(e.clientX, e.clientY);
 });
 
-// Periodically spawn owls
+// Orientation change logic for responsiveness
+window.addEventListener('resize', () => {
+    // Optional: Adjust particle counts or animations based on screen size dynamically
+});
+
+const funnyDialogues = [
+    "ಏನ್ ಸಮಾಚಾರ ಗೂಬೆ? 🦉",
+    "ಊಟ ಆಯ್ತಾ? 🍛",
+    "ಗೂಬೆ ತರ ಇರಬೇಡ! 😂",
+    "ಎಲ್ಲಿಗೆ ಹೋಗ್ತಾ ಇದೀಯಾ? 🏃‍♂️",
+    "ಯಾರಪ್ಪ ಇದು ಇಷ್ಟು ಚಂದ ಇರೋದು? 😎",
+    "ಪ್ರೀತಿ ಪ್ರೇಮ ಎಲ್ಲಾ ಪುಸ್ತಕದ ಬದನೆಕಾಯಿ! 🍆",
+    "ಸೂಪರ್ ಅಲ್ವಾ? ✨",
+    "ಗೊತ್ತು ಬಿಡಪ್ಪಾ! 😎",
+    "ಸೈಕೋ ಗೂಬೆ! 🤯",
+    "ಜಾಸ್ತಿ ಆಯ್ತು ನೋಡು! 🛑",
+    "ಮೇಡಂ, ನೀವು ತುಂಬಾ ಕ್ಯೂಟ್! ✨",
+    "ಗೂಬೆ ಮರಿ, ಚಂದ ಇದ್ದೀಯಾ! 🦉",
+    "ಯಾವ ಲೋಕದ ಅಪ್ಸರೆ ನೀವು? 👼",
+    "ನಿಮ್ಮ ನಗು ತುಂಬಾ ಚೆನ್ನಾಗಿದೆ! 😊",
+    "ಕಿನ್ನರಿ ಮೇಡಂ ಬಂದರು! 🧚‍♀️",
+    "ಗೂಬೆ, ನಿನ್ನ ಕಣ್ಣುಗಳು ಅದ್ಭುತ! ✨",
+];
+
+function spawnDialogue() {
+    const dialogue = document.createElement('div');
+    dialogue.className = 'floating-dialogue';
+    dialogue.textContent = funnyDialogues[Math.floor(Math.random() * funnyDialogues.length)];
+
+    // Random position
+    const startX = Math.random() * (window.innerWidth - 200);
+    const startY = window.innerHeight + 50;
+
+    dialogue.style.left = `${startX}px`;
+    dialogue.style.top = `${startY}px`;
+
+    document.body.appendChild(dialogue);
+
+    const duration = 8000 + Math.random() * 4000;
+    const endY = -100;
+    const driftX = (Math.random() - 0.5) * 200;
+
+    dialogue.animate([
+        { top: `${startY}px`, left: `${startX}px`, opacity: 0, transform: 'scale(0.5)' },
+        { top: `${startY - 100}px`, opacity: 1, transform: 'scale(1.1)', offset: 0.1 },
+        { top: `${startY - 200}px`, opacity: 1, transform: 'scale(1)', offset: 0.8 },
+        { top: `${endY}px`, left: `${startX + driftX}px`, opacity: 0, transform: 'scale(0.8)' }
+    ], {
+        duration: duration,
+        easing: 'ease-out'
+    }).onfinish = () => dialogue.remove();
+}
+
+// Periodically spawn owls and dialogues
 setInterval(spawnOwl, 2500);
+setInterval(spawnDialogue, 4000);
 for (let i = 0; i < 4; i++) setTimeout(spawnOwl, i * 1000);
+setTimeout(spawnDialogue, 1000);
+
 

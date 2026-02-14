@@ -270,18 +270,95 @@ h1 {
     cursor: pointer;
 }
 
+.floating-dialogue {
+    position: fixed;
+    padding: 0.8rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+    pointer-events: none;
+    z-index: 50;
+    white-space: nowrap;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
 @media (max-width: 768px) {
     .glass-card {
         flex-direction: column;
-        padding: 2.5rem;
+        padding: 2rem;
+        text-align: center;
+        gap: 2rem;
+        margin: 1rem;
     }
 
     h1 {
         font-size: 3rem;
+        line-height: 1.2;
     }
 
     .main-owl img {
-        width: 200px;
-        height: 200px;
+        width: 220px;
+        height: 220px;
+    }
+
+    .message-area h2 {
+        font-size: 2rem;
+    }
+
+    .gallery-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 1rem;
+        gap: 1rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .gallery-grid img {
+        flex: 0 0 200px;
+        scroll-snap-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero {
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .glass-card {
+        padding: 1.5rem;
+        border-radius: 20px;
+    }
+
+    .main-owl img {
+        width: 180px;
+        height: 180px;
+    }
+
+    .message-area p {
+        font-size: 1.1rem;
+    }
+
+    .glow-btn {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.2rem;
+    }
+
+    .floating-dialogue {
+        font-size: 1rem;
+        padding: 0.6rem 1rem;
+        max-width: 90%;
+        white-space: normal;
+        text-align: center;
     }
 }
