@@ -110,7 +110,7 @@ function spawnOwl() {
     animation.onfinish = () => owl.remove();
 
     owl.onclick = () => {
-        createHearts(owl.offsetLeft + 40, owl.offsetTop + 40);
+        // createHearts(owl.offsetLeft + 40, owl.offsetTop + 40);
         owl.style.transform = 'scale(1.5)';
         owl.style.opacity = '0';
         setTimeout(() => owl.remove(), 300);
@@ -174,17 +174,15 @@ window.addEventListener('touchstart', (e) => {
     // Prevent default to avoid scrolling/zooming issues on some interactions if needed
     // e.preventDefault(); 
 
-    for (let i = 0; i < e.touches.length; i++) {
-        const touch = e.touches[i];
-        createHearts(touch.clientX, touch.clientY);
-        triggerHaptic();
-    }
+    // for (let i = 0; i < e.touches.length; i++) {
+    //     const touch = e.touches[i];
+    //     createHearts(touch.clientX, touch.clientY);
+    //     triggerHaptic();
+    // }
 }, { passive: true });
 
 // Mouse click for hearts (Keep for desktop)
-window.addEventListener('mousedown', (e) => {
-    createHearts(e.clientX, e.clientY);
-});
+
 
 // Orientation change logic for responsiveness
 window.addEventListener('resize', () => {
@@ -203,7 +201,6 @@ const funnyDialogues = [
     "ಗೂಬೆ, ನಿನ್ನ ಕಣ್ಣುಗಳು ಅದ್ಭುತ! ✨",
     "ಎಲ್ಲಿಗೆ ಹೋಗ್ತಾ ಇದೀಯಾ? 🏃‍♂️",
     "ಯಾರಪ್ಪ ಇದು ಇಷ್ಟು ಚಂದ ಇರೋದು? 😎",
-    "ಪ್ರೀತಿ ಪ್ರೇಮ ಎಲ್ಲಾ ಪುಸ್ತಕದ ಬದನೆಕಾಯಿ! 🍆",
     "ಸೂಪರ್ ಅಲ್ವಾ? ✨",
     "ಗೊತ್ತು ಬಿಡಪ್ಪಾ! 😎",
     "ಸೈಕೋ ಗೂಬೆ! 🤯",
