@@ -1,0 +1,170 @@
+const owlImages = [
+    'STK-20260128-WA0010.webp',
+    'STK-20260128-WA0017.webp',
+    'STK-20260128-WA0018.webp',
+    'STK-20260131-WA0001.webp',
+    'STK-20260204-WA0007.webp',
+    'STK-20260204-WA0010 - Copy.webp',
+    'STK-20260204-WA0012 - Copy.webp',
+    'STK-20260204-WA0013.webp',
+    'STK-20260204-WA0027.webp',
+    'STK-20260204-WA0028.webp',
+    'STK-20260204-WA0029 - Copy.webp',
+    'STK-20260209-WA0001 - Copy.webp',
+    'STK-20260210-WA0012.webp',
+    'STK-20260211-WA0029.webp',
+    'STK-20260211-WA0030 - Copy.webp',
+    'STK-20260211-WA0031.webp',
+    'STK-20260211-WA0033.webp',
+    'STK-20260211-WA0034 - Copy.webp',
+    'STK-20260211-WA0035.webp',
+    'STK-20260211-WA0036 - Copy.webp',
+    'STK-20260212-WA0002.webp',
+    'STK-20260212-WA0007.webp'
+];
+
+const funnyMessages = [
+    "ನಾನು ಸದಾ ನಿನ್ನನ್ನೇ ಪ್ರೀತಿಸುವ ಗೂಬೆ!",
+    "ನೀವು ನಿಜಕ್ಕೂ ಅದ್ಭುತ! ನನ್ನ ವ್ಯಾಲೆಂಟೈನ್ ಆಗುತ್ತೀಯಾ?",
+    "ಪ್ರೀತಿಯೇ ಜೀವನದ ಗೂಬೆ!",
+    "ಗೂಬೆಗಳ ಆಲಿಂಗನ ನಿನಗಾಗಿ!",
+    "ನೀವು ಎಷ್ಟು ಮುದ್ದಾಗಿದ್ದೀರಿ!",
+    "ನನ್ನ ಪ್ರೀತಿಯ ಗೂಬೆ ನೀನು!",
+    "ನಗು ನಗುತ ಇರು ನನ್ನ ಗೂಬೆಯೇ!",
+    "ಗೂಬೆ ಹೂಟ್ ಹೂಟ್ ಅಂದರೂ, ಅದು ಪ್ರೀತಿಯೇ!"
+];
+
+const animationContainer = document.getElementById('animation-container');
+const trailContainer = document.getElementById('trail-container');
+const hugBtn = document.getElementById('hug-btn');
+const hugCountSpan = document.getElementById('hug-count');
+const funnyMessageP = document.getElementById('funny-message');
+const heroOwl = document.getElementById('hero-owl');
+
+let hugCount = 0;
+
+// Cursor Trial Logic
+let lastTrailTime = 0;
+window.addEventListener('mousemove', (e) => {
+    const now = Date.now();
+    if (now - lastTrailTime > 50) {
+        createTrailParticle(e.clientX, e.clientY);
+        lastTrailTime = now;
+    }
+});
+
+function createTrailParticle(x, y) {
+    const particle = document.createElement('div');
+    particle.className = 'trail-particle';
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+
+    // Random size and color
+    const size = Math.random() * 8 + 4;
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+
+    const colors = ['#ff0055', '#00d4ff', '#9d00ff', '#ffffff'];
+    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+    particle.style.boxShadow = `0 0 10px ${particle.style.background}`;
+
+    // Random velocity
+    const dx = (Math.random() - 0.5) * 50;
+    const dy = (Math.random() - 0.5) * 50;
+    particle.style.setProperty('--dx', dx);
+    particle.style.setProperty('--dy', dy);
+
+    trailContainer.appendChild(particle);
+    setTimeout(() => particle.remove(), 1000);
+}
+
+// Function to spawn flying owls
+function spawnOwl() {
+    const owl = document.createElement('img');
+    const randomImage = owlImages[Math.floor(Math.random() * owlImages.length)];
+    owl.src = `images/${randomImage}`;
+    owl.className = 'flying-owl';
+
+    const isLeftToRight = Math.random() > 0.5;
+    const startX = isLeftToRight ? -100 : window.innerWidth + 100;
+    const endX = isLeftToRight ? window.innerWidth + 100 : -100;
+    const startY = Math.random() * (window.innerHeight - 200) + 100;
+
+    owl.style.left = `${startX}px`;
+    owl.style.top = `${startY}px`;
+
+    animationContainer.appendChild(owl);
+
+    const duration = 6000 + Math.random() * 8000;
+    const controlY = startY + (Math.random() - 0.5) * 400;
+
+    const animation = owl.animate([
+        { left: `${startX}px`, top: `${startY}px`, transform: `rotate(${isLeftToRight ? 20 : -20}deg)` },
+        { left: `${(startX + endX) / 2}px`, top: `${controlY}px`, transform: 'rotate(0deg)' },
+        { left: `${endX}px`, top: `${startY}px`, transform: `rotate(${isLeftToRight ? -20 : 20}deg)` }
+    ], {
+        duration: duration,
+        easing: 'ease-in-out'
+    });
+
+    animation.onfinish = () => owl.remove();
+
+    owl.onclick = () => {
+        createHearts(owl.offsetLeft + 40, owl.offsetTop + 40);
+        owl.style.transform = 'scale(1.5)';
+        owl.style.opacity = '0';
+        setTimeout(() => owl.remove(), 300);
+    };
+}
+
+// Function to spawn hearts
+function createHearts(x, y) {
+    for (let i = 0; i < 12; i++) {
+        const heart = document.createElement('div');
+        heart.style.position = 'absolute';
+        heart.style.left = `${x}px`;
+        heart.style.top = `${y}px`;
+        heart.style.fontSize = `${Math.random() * 20 + 20}px`;
+        heart.style.pointerEvents = 'none';
+        heart.style.zIndex = '1000';
+        heart.innerHTML = ['❤️', '💖', '🦉', '✨'][Math.floor(Math.random() * 4)];
+
+        const dx = (Math.random() - 0.5) * 300;
+        const dy = (Math.random() - 0.5) * 300 - 100;
+
+        document.body.appendChild(heart);
+
+        heart.animate([
+            { transform: 'translate(0, 0) scale(1) rotate(0deg)', opacity: 1 },
+            { transform: `translate(${dx}px, ${dy}px) scale(2) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+        ], {
+            duration: 1000 + Math.random() * 1000,
+            easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)'
+        }).onfinish = () => heart.remove();
+    }
+}
+
+// Hug button click handler
+hugBtn.addEventListener('click', () => {
+    hugCount++;
+    hugCountSpan.textContent = hugCount;
+
+    const randomMsg = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+    funnyMessageP.textContent = randomMsg;
+
+    const randomImg = owlImages[Math.floor(Math.random() * owlImages.length)];
+    heroOwl.src = `images/${randomImg}`;
+
+    const rect = hugBtn.getBoundingClientRect();
+    createHearts(rect.left + rect.width / 2, rect.top);
+});
+
+// Click anywhere for hearts
+window.addEventListener('mousedown', (e) => {
+    createHearts(e.clientX, e.clientY);
+});
+
+// Periodically spawn owls
+setInterval(spawnOwl, 2500);
+for (let i = 0; i < 4; i++) setTimeout(spawnOwl, i * 1000);
+
