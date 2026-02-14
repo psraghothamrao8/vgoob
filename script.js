@@ -154,6 +154,11 @@ function triggerHaptic() {
 // Hug button click handler
 hugBtn.addEventListener('click', () => {
     triggerHaptic();
+
+    // Remove hint if present
+    const hint = document.querySelector('.click-hint');
+    if (hint) hint.remove();
+
     hugCount++;
     hugCountSpan.textContent = hugCount;
 

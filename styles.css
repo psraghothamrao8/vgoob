@@ -286,6 +286,33 @@ h1 {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+.click-hint {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ff0055;
+    font-size: 1.2rem;
+    font-weight: 700;
+    white-space: nowrap;
+    animation: bounce 1.5s infinite;
+    text-shadow: 0 0 10px rgba(255, 0, 85, 0.8);
+    pointer-events: none;
+    z-index: 20;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
+}
+
 @media (max-width: 768px) {
     .glass-card {
         flex-direction: column;
