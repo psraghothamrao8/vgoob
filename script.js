@@ -174,23 +174,6 @@ hugBtn.addEventListener('click', () => {
     createHearts(rect.left + rect.width / 2, rect.top);
 });
 
-// Touch handling for hearts (Multi-touch support)
-window.addEventListener('touchstart', (e) => {
-    // Prevent default to avoid scrolling/zooming issues on some interactions if needed
-    // e.preventDefault(); 
-
-    for (let i = 0; i < e.touches.length; i++) {
-        const touch = e.touches[i];
-        createHearts(touch.clientX, touch.clientY);
-        triggerHaptic();
-    }
-}, { passive: true });
-
-// Mouse click for hearts (Keep for desktop)
-window.addEventListener('mousedown', (e) => {
-    createHearts(e.clientX, e.clientY);
-});
-
 // Orientation change logic for responsiveness
 window.addEventListener('resize', () => {
     // Optional: Adjust particle counts or animations based on screen size dynamically
