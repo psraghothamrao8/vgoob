@@ -195,19 +195,19 @@ const funnyDialogues = [
     "ಏನ್ ಸಮಾಚಾರ ಗೂಬೆ? 🦉",
     "ಊಟ ಆಯ್ತಾ? 🍛",
     "ಗೂಬೆ ತರ ಇರಬೇಡ! 😂",
-    "ಎಲ್ಲಿಗೆ ಹೋಗ್ತಾ ಇದೀಯಾ? 🏃‍♂️",
-    "ಯಾರಪ್ಪ ಇದು ಇಷ್ಟು ಚಂದ ಇರೋದು? 😎",
-    "ಪ್ರೀತಿ ಪ್ರೇಮ ಎಲ್ಲಾ ಪುಸ್ತಕದ ಬದನೆಕಾಯಿ! 🍆",
-    "ಸೂಪರ್ ಅಲ್ವಾ? ✨",
-    "ಗೊತ್ತು ಬಿಡಪ್ಪಾ! 😎",
-    "ಸೈಕೋ ಗೂಬೆ! 🤯",
-    "ಜಾಸ್ತಿ ಆಯ್ತು ನೋಡು! 🛑",
     "ಮೇಡಂ, ನೀವು ತುಂಬಾ ಕ್ಯೂಟ್! ✨",
     "ಗೂಬೆ ಮರಿ, ಚಂದ ಇದ್ದೀಯಾ! 🦉",
     "ಯಾವ ಲೋಕದ ಅಪ್ಸರೆ ನೀವು? 👼",
     "ನಿಮ್ಮ ನಗು ತುಂಬಾ ಚೆನ್ನಾಗಿದೆ! 😊",
     "ಕಿನ್ನರಿ ಮೇಡಂ ಬಂದರು! 🧚‍♀️",
     "ಗೂಬೆ, ನಿನ್ನ ಕಣ್ಣುಗಳು ಅದ್ಭುತ! ✨",
+    "ಎಲ್ಲಿಗೆ ಹೋಗ್ತಾ ಇದೀಯಾ? 🏃‍♂️",
+    "ಯಾರಪ್ಪ ಇದು ಇಷ್ಟು ಚಂದ ಇರೋದು? 😎",
+    "ಪ್ರೀತಿ ಪ್ರೇಮ ಎಲ್ಲಾ ಪುಸ್ತಕದ ಬದನೆಕಾಯಿ! 🍆",
+    "ಸೂಪರ್ ಅಲ್ವಾ? ✨",
+    "ಗೊತ್ತು ಬಿಡಪ್ಪಾ! 😎",
+    "ಸೈಕೋ ಗೂಬೆ! 🤯",
+    "ಜಾಸ್ತಿ ಆಯ್ತು ನೋಡು! 🛑"
 ];
 
 function spawnDialogue() {
@@ -244,5 +244,49 @@ setInterval(spawnOwl, 2500);
 setInterval(spawnDialogue, 4000);
 for (let i = 0; i < 4; i++) setTimeout(spawnOwl, i * 1000);
 setTimeout(spawnDialogue, 1000);
+
+// Login Logic
+const loginContainer = document.getElementById('login-screen');
+const mainContent = document.getElementById('main-content');
+const passwordInput = document.getElementById('password-input');
+const loginButton = document.getElementById('login-btn');
+const errorMsg = document.getElementById('error-msg');
+
+function checkLogin() {
+    const password = passwordInput.value.toLowerCase().trim();
+    if (password === 'meow') {
+        loginContainer.style.opacity = '0';
+        setTimeout(() => {
+            loginContainer.style.display = 'none';
+            mainContent.style.display = 'block';
+            mainContent.animate([
+                { opacity: 0, transform: 'scale(0.9, 0.9)' },
+                { opacity: 1, transform: 'scale(1, 1)' }
+            ], {
+                duration: 800,
+                easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                fill: 'forwards'
+            });
+            triggerHaptic();
+        }, 500);
+    } else {
+        errorMsg.textContent = 'ತಪ್ಪು! ಪಾಸ್‌ವರ್ಡ್ "meow" ಆಗಿರಬೇಕು! 😾';
+        passwordInput.style.borderColor = '#ff0055';
+        triggerHaptic();
+        loginContainer.animate([
+            { transform: 'translateX(0)' },
+            { transform: 'translateX(-10px)' },
+            { transform: 'translateX(10px)' },
+            { transform: 'translateX(0)' }
+        ], { duration: 300 });
+    }
+}
+
+if (loginButton) {
+    loginButton.addEventListener('click', checkLogin);
+    passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') checkLogin();
+    });
+}
 
 
